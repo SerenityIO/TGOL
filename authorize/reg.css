@@ -1,0 +1,85 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    background-image: url(../img/fon.jpg);
+    background-repeat: no-repeat;
+    font-family: sans-serif;
+    font-size: 2em;
+}
+
+h1 {
+    color: white;
+}
+
+.first {
+    margin-bottom: 3em
+}
+
+input[type="password"] {
+    background: url(../img/pass_icon.png) no-repeat;
+    background-position:3px 3px ;
+    background-size: 8%;
+    padding-left: 25px;
+}
+input[type="email"] {
+    background: url(../img/email_icon.png) no-repeat;
+    background-position:1.5px 4px ;
+    background-size: 8%;
+    padding-left: 25px;
+}
+div {
+    display: flex;
+    flex-direction: column;
+}
+
+.box {
+    margin: 5%;
+    height: 18rem;
+    width: 23rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    border: solid black;
+    border-radius: 10px;
+    box-shadow: 5px 5px green;
+}
+
+content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form>div>input {
+    width: 15rem;
+    border-radius: 5px;
+    margin: 0.7rem;
+    height: 2rem;
+}
+
+form>div>button {
+    color: white;
+    margin: 0.2rem;
+    width: 15.5rem;
+    height: 2rem;
+    background-color: #1E90FF;
+    border-radius: 0.4rem;
+}
+
+form>div>button>a {
+    text-decoration: none;
+    outline: none;
+    color: white;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>GoL</title>
+	<link rel="stylesheet" type="text/css" href="../main/style.css">
+</head>
+
+<body>
+	<header>
+		<div>
+			<h1>Game of Life</h1>
+			<div>
+	</header>
+	<content>
+		</button>
+		<div class="interface">
+
+			<button onclick="play()">Play</button>
+			<button>Pause</button>
+			<button onclick="Clear()">Clear</button>
+			<button>Slow</button>
+			<button>Fast</button>
+			<button onclick="randomGen()">Seed</button>
+			<select class="selection" onchange="handleChangeSize(event)" id="size">
+				<option value="20x10">20x10</option>
+				<option value="50x30">50x30</option>
+				<option value="70x50">70x50</option>
+			</select>
+
+		</div>
+		<div id="field" onclick="handleSquare(event)">
+		</div>
+		<div class="generation">
+			<span>Generation</span>
+		</div>
+		<footer>
+			<button name="exit" onclick="Exit()">exit</button>
+		</footer>
+	</content>
+	<script src="kvadrat.js"></script>
+	<script src="../authorize/reg.js"></script>
+</body>
+
+</html>
