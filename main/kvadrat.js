@@ -1,3 +1,20 @@
+window.onload = function () {
+    redirect();
+    render();
+};
+
+function redirect() {
+    DataBase.forEach(element => {
+        if (element.isonline === true) {
+            //alert("Welcome back," + element.email);
+        }
+        else {
+            document.location.href = "../authorize/log.html";
+        }
+    });
+}
+
+
 var game = {
     size: '20x10'
 }
@@ -13,11 +30,12 @@ var table = createTable();
 
 
 
+
 function handleChangeSize(event) {
     game.size = event.target.value;
     fieldDelete();
     grid = createGrid();
-    createTable();
+    table = createTable();
 }
 
 //Creating table
@@ -106,6 +124,6 @@ function render() {
 
             cell.classList.toggle('alive', isalive);
         }
-        
+
     }
 }

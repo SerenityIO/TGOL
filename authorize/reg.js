@@ -37,8 +37,8 @@ function RegisterUser(event) {
             DataBase.push({
                 email: email,
                 pass: F_pass,
-                isonline: false,
-                settings: [{game}]
+                isonline: false
+                
             });
 
             window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
@@ -49,8 +49,6 @@ function RegisterUser(event) {
         }
     }
 }
-
-
 
 function Login(event) {
     event.preventDefault();
