@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>TGoL</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="interface">
+
+        <button onclick>Play</button>
+        <button>Pause</button>
+        <button onclick="clearField()">Clear</button>
+        <button>Slow</button>
+        <button>Fast</button>
+        <button onclick="randomGen()">Seed</button>
+        <select class="selection" onchange="handleChangeSize(event)" id="size">
+            <option value="20x10">20x10</option>
+            <option value="50x30">50x30</option>
+            <option value="70x50">70x50</option>
+        </select>
+
+    </div>
+    <div id="field"></div>
+
+    <script src="./kvadrat.js"></script>
+</body>
+
+</html>
