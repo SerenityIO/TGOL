@@ -85,4 +85,4 @@ function Exit() {
         i++;
     });
     document.location.href = "./log.html";
-} 0
+} 

@@ -16,11 +16,12 @@ function redirect() {
 
 
 var game = {
-    size: '20x10'
+    size: '10x20',
+    arr: []
 }
 
-var isPlaying = false;
 
+game.arr = createGrid();
 var grid = createGrid();
 var gridGen = createGrid();
 
@@ -29,13 +30,13 @@ var field = document.getElementById('field');
 var table = createTable();
 
 
-
-
 function handleChangeSize(event) {
     game.size = event.target.value;
     fieldDelete();
     grid = createGrid();
     table = createTable();
+    gridGen = createGrid();
+    game.arr = createGrid();
 }
 
 //Creating table
@@ -47,11 +48,11 @@ function createTable() {
 
     table.className = 'grid';
 
-    for (let i = 0; i < cols; i++) {
+    for (let i = 0; i < rows; i++) {
         var row = document.createElement('tr');
         row.className = 'row';
 
-        for (let j = 0; j < rows; j++) {
+        for (let j = 0; j < cols; j++) {
             var cell = document.createElement('td');
 
             cell.className = 'cell';
@@ -97,10 +98,10 @@ function createGrid() {
 
     const grid = [];
 
-    for (let i = 0; i < cols; i++) {
+    for (let i = 0; i < rows; i++) {
         grid[i] = [];
 
-        for (let j = 0; j < rows; j++) {
+        for (let j = 0; j < cols; j++) {
             grid[i][j] = 0;
         }
     }
@@ -126,4 +127,52 @@ function render() {
         }
 
     }
+}
+
+function play() {
+    setInterval(Play, 1000);
+}
+
+function Play() {
+    var size = game.size.split('x');
+    var cols = +size[1], rows = +size[0];
+
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            var neighbors = 0;
+            var isalive = grid[i][j];
+
+            if (i - 1 >= 0) if (grid[i - 1][j] === 1) neighbors++;
+            if (i - 1 >= 0 && j - 1 >= 0) if (grid[i - 1][j - 1] === 1) neighbors++;
+            if (i - 1 >= 0 && j + 1 < cols) if (grid[i - 1][j + 1] === 1) neighbors++;
+            if (j - 1 >= 0) if (grid[i][j - 1] === 1) neighbors++;
+            if (j + 1 < cols) if (grid[i][j + 1] === 1) neighbors++;
+            if (i + 1 < rows) if (grid[i + 1][j]) neighbors++;
+            if (i + 1 < rows && j - 1 >= 0) if (grid[i + 1][j - 1] === 1) neighbors++;
+            if (i + 1 < rows && j + 1 < cols) if (grid[i + 1][j + 1] === 1) neighbors++;
+
+            if (isalive) {
+                if (neighbors < 2 || neighbors > 3) {
+                    gridGen[i][j] = 0;
+                }
+                else if (neighbors === 2 || neighbors === 3) {
+                    gridGen[i][j] = 1;
+                }
+            }
+            else {
+                if (neighbors === 3) {
+                    gridGen[i][j] = 1;
+                }
+            }
+        }
+    }
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            grid[i][j] = gridGen[i][j];
+            game.arr[i][j] = gridGen[i][j];
+            gridGen[i][j] = 0;
+        }
+    }
+    render();
 }

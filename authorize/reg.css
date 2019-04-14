@@ -12,6 +12,11 @@ header {
     font-size: 2em;
 }
 
+body {
+    background-image: url(../img/fon.jpg);
+    background-repeat: no-repeat;
+}
+
 h1 {
     color: white;
 }
@@ -60,6 +65,10 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.box {
+    background-color: white;
 }
 
 form>div>input {
