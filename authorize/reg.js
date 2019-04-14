@@ -17,15 +17,17 @@ function RegisterUser(event) {
     var email = event.target.elements.email.value;
     var F_pass = event.target.elements.FirstPassword.value;
     var S_pass = event.target.elements.SecondPassword.value;
+    var us = 0;
 
-    var temp = DataBase.forEach(comp => {
+    DataBase.forEach(comp => {
         if (comp.email === email) {
             alert("This user already exists");
-            return 1;
+            us = 1
         }
     });
 
-    if (temp != 1) {
+    if (us != 1) {
+
 
         if (F_pass === S_pass) {
             users = {
@@ -38,7 +40,7 @@ function RegisterUser(event) {
                 email: email,
                 pass: F_pass,
                 isonline: false
-                
+
             });
 
             window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
@@ -48,7 +50,9 @@ function RegisterUser(event) {
             alert("2");
         }
     }
+    us = 0;
 }
+
 
 function Login(event) {
     event.preventDefault();
