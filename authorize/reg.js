@@ -1,14 +1,5 @@
 var DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
 
-var users = [{
-    email: "admin@admin.com",
-    pass: "admin",
-    isonline: false,
-    settings: [{
-        size: '20x10',
-        arr: []
-    }]
-}];
 
 
 function RegisterUser(event) {
@@ -30,17 +21,12 @@ function RegisterUser(event) {
 
 
         if (F_pass === S_pass) {
-            users = {
-                email: email,
-                pass: F_pass,
-                isonline: false
-            };
-
+          
             DataBase.push({
                 email: email,
                 pass: F_pass,
-                isonline: false
-
+                isonline: false,
+                settings: [email,],
             });
 
             window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
@@ -53,6 +39,7 @@ function RegisterUser(event) {
     us = 0;
 }
 
+// console.log(DataBase);
 
 function Login(event) {
     event.preventDefault();
@@ -88,5 +75,5 @@ function Exit() {
         }
         i++;
     });
-    document.location.href = "./log.html";
+    document.location.href = "../authorize/log.html";
 } 

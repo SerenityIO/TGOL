@@ -1,18 +1,23 @@
+var DataBase = (JSON.parse(window.localStorage.getItem('DataBase')))
 window.onload = function () {
     redirect();
-    render();
+    loadRender();
 };
 
+
 function redirect() {
-    DataBase.forEach(element => {
-        if (element.isonline === true) {
-            //alert("Welcome back," + element.email);
-        }
-        else {
-            document.location.href = "../authorize/log.html";
-        }
-    });
+    // DataBase.forEach(element => {
+    //     if (element.isonline === true) {
+    //         //alert("Welcome back," + element.email);
+    //     }
+    //     else {
+    //         document.location.href = "../authorize/log.html";
+    //     }
+    // });
 }
+
+var flashback = [];
+// flashback[0] = [];
 
 
 var game = {
@@ -20,6 +25,7 @@ var game = {
     arr: []
 }
 
+var isPlaying = false;
 
 game.arr = createGrid();
 var grid = createGrid();
@@ -37,9 +43,11 @@ function handleChangeSize(event) {
     table = createTable();
     gridGen = createGrid();
     game.arr = createGrid();
+    saveSettings();
 }
 
 //Creating table
+
 
 function createTable() {
     var size = game.size.split('x');
@@ -81,6 +89,7 @@ function clearField() {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
             grid[i][j] = 0;
+            game.arr[i][j] = grid[i][j];
         }
     }
     render();
@@ -112,9 +121,11 @@ function randomGen() {
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
             grid[i][j] = Math.round(Math.random());
+            game.arr[i][j] = grid[i][j];
         }
     }
     render();
+    saveSettings();
 }
 
 function render() {
@@ -122,21 +133,23 @@ function render() {
         for (let j = 0; j < grid[i].length; j++) {
             var cell = table.rows[i].cells[j];
             var isalive = grid[i][j];
+            game.arr[i][j] = grid[i][j];
 
             cell.classList.toggle('alive', isalive);
         }
 
     }
+    saveSettings();
+    //  flashback.push(grid);
 }
 
-function play() {
-    setInterval(Play, 1000);
+function play(speed) {
+    setInterval(Play, speed);
 }
 
 function Play() {
     var size = game.size.split('x');
     var cols = +size[1], rows = +size[0];
-
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -167,6 +180,9 @@ function Play() {
             }
         }
     }
+
+
+
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             grid[i][j] = gridGen[i][j];
@@ -174,5 +190,71 @@ function Play() {
             gridGen[i][j] = 0;
         }
     }
+
+    render();
+    //  if (compare(flashback, grid) === true) return;
+
+}
+
+function compare(arr1, arr2) {
+    // debugger
+    let count = 0;
+    var size = game.size.split('x');
+    var cols = +size[1], rows = +size[0];
+
+
+    for (let k = 0; k < arr1.length; k++) {
+        var h = arr1[k];
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                if (h[i][j] === arr2[i][j]) count++;
+            }
+        }
+    }
+    if (count === arr2.length) return true;
+}
+
+function saveSettings() {
+    // console.log(DataBase[1].settings);
+    // debugger
+    console.log(game);
+    DataBase[userID].settings.splice(0, 1, game);
+    window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
+    
+
+}
+window.onbeforeunload = function () {
+    saveSettings();
+}
+
+const userID = findUserID();
+
+
+function findUserID() {
+    for (var i = 0; i < DataBase.length; i++) {
+        if (DataBase[i].isonline === true) return i;
+    }
+}
+
+
+function loadRender() {
+    fieldDelete();
+    let size = DataBase[userID].settings[0].size.split('x');
+    game.size = DataBase[userID].settings[0].size;
+    grid = createGrid();
+
+
+    for (let i = 0; i < size[0]; i++) {
+        for (let j = 0; j < size[1]; j++) {
+            console.log(grid[i][j]);
+            grid[i][j] = DataBase[userID].settings[0].arr[i][j];
+
+        }
+    }
+
+
+    
+
+
     render();
 }

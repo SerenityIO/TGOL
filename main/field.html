@@ -13,11 +13,11 @@
 <body>
     <div class="interface">
 
-        <button onclick="play()">Play</button>
+        <button onclick="play(1000)">Play</button>
         <button>Pause</button>
         <button onclick="clearField()">Clear</button>
-        <button>Slow</button>
-        <button>Fast</button>
+        <button onclick="play(3000)">Slow</button>
+        <button onclick="play(200)">Fast</button>
         <button onclick="randomGen()">Seed</button>
         <select class="selection" onchange="handleChangeSize(event)" id="size">
             <option value="10x20">20x10</option>
