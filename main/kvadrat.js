@@ -28,12 +28,12 @@ var game = {
 var isPlaying = false;
 
 game.arr = createGrid();
-var grid = createGrid();
-var gridGen = createGrid();
+var grid;
+var gridGen;
 
 
 var field = document.getElementById('field');
-var table = createTable();
+var table;
 
 
 function handleChangeSize(event) {
@@ -217,10 +217,10 @@ function compare(arr1, arr2) {
 function saveSettings() {
     // console.log(DataBase[1].settings);
     // debugger
-    console.log(game);
+    //console.log(game);
     DataBase[userID].settings.splice(0, 1, game);
     window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
-    
+
 
 }
 window.onbeforeunload = function () {
@@ -242,19 +242,20 @@ function loadRender() {
     let size = DataBase[userID].settings[0].size.split('x');
     game.size = DataBase[userID].settings[0].size;
     grid = createGrid();
+    table = createTable();
+    gridGen = createGrid();
 
+    let selectSize = document.getElementsByTagName('select');
+
+    selectSize.value = DataBase[userID].settings[0].size;
 
     for (let i = 0; i < size[0]; i++) {
         for (let j = 0; j < size[1]; j++) {
-            console.log(grid[i][j]);
+         //   console.log(grid[i][j]);
             grid[i][j] = DataBase[userID].settings[0].arr[i][j];
 
         }
     }
-
-
-    
-
 
     render();
 }
