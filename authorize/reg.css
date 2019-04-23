@@ -12,6 +12,11 @@ header {
     font-size: 2em;
 }
 
+body {
+    background-image: url(../img/fon.jpg);
+    background-repeat: no-repeat;
+}
+
 h1 {
     color: white;
 }
@@ -62,11 +67,16 @@ form {
     align-items: center;
 }
 
+.box {
+    background-color: white;
+}
+
 form>div>input {
     width: 15rem;
     border-radius: 5px;
     margin: 0.7rem;
     height: 2rem;
+    
 }
 
 form>div>button {
@@ -83,3 +93,4 @@ form>div>button>a {
     outline: none;
     color: white;
 }
+

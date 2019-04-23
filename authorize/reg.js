@@ -1,14 +1,5 @@
 var DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
 
-var users = [{
-    email: "admin@admin.com",
-    pass: "admin",
-    isonline: false,
-    settings: [{
-        size: '20x10',
-        arr: []
-    }]
-}];
 
 
 function RegisterUser(event) {
@@ -17,28 +8,25 @@ function RegisterUser(event) {
     var email = event.target.elements.email.value;
     var F_pass = event.target.elements.FirstPassword.value;
     var S_pass = event.target.elements.SecondPassword.value;
+    var us = 0;
 
-    var temp = DataBase.forEach(comp => {
+    DataBase.forEach(comp => {
         if (comp.email === email) {
             alert("This user already exists");
-            return 1;
+            us = 1
         }
     });
 
-    if (temp != 1) {
+    if (us != 1) {
+
 
         if (F_pass === S_pass) {
-            users = {
-                email: email,
-                pass: F_pass,
-                isonline: false
-            };
-
+          
             DataBase.push({
                 email: email,
                 pass: F_pass,
                 isonline: false,
-                settings: [{game}]
+                settings: [email,],
             });
 
             window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
@@ -48,9 +36,10 @@ function RegisterUser(event) {
             alert("2");
         }
     }
+    us = 0;
 }
 
-
+// console.log(DataBase);
 
 function Login(event) {
     event.preventDefault();
@@ -86,5 +75,5 @@ function Exit() {
         }
         i++;
     });
-    document.location.href = "./log.html";
-} 0
+    document.location.href = "../authorize/log.html";
+} 

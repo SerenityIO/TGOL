@@ -2,44 +2,38 @@
 <html>
 
 <head>
-	<title>GoL</title>
-	<link rel="stylesheet" type="text/css" href="../main/style.css">
+    <meta charset="UTF-8" />
+    <title>TGoL</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
+<header>
+    <h1>The Game of Life</h1>
+</header>
 
 <body>
-	<header>
-		<div>
-			<h1>Game of Life</h1>
-			<div>
-	</header>
-	<content>
-		</button>
-		<div class="interface">
+    <div class="interface">
 
-			<button onclick="play()">Play</button>
-			<button>Pause</button>
-			<button onclick="Clear()">Clear</button>
-			<button>Slow</button>
-			<button>Fast</button>
-			<button onclick="randomGen()">Seed</button>
-			<select class="selection" onchange="handleChangeSize(event)" id="size">
-				<option value="20x10">20x10</option>
-				<option value="50x30">50x30</option>
-				<option value="70x50">70x50</option>
-			</select>
+        <button onclick="play(1000)">Play</button>
+        <button onclick="pauseGame()">Pause</button>
+        <button onclick="clearField()">Clear</button>
+        <button onclick="slow()">Slow</button>
+        <button onclick="fast()">Fast</button>
+        <button onclick="randomGen()">Seed</button>
+        <select class="selection" onchange="handleChangeSize(event)" id="size">
+            <option value="10x20">20x10</option>
+            <option value="30x50">50x30</option>
+            <option value="50x70">70x50</option>
+        </select>
 
-		</div>
-		<div id="field" onclick="handleSquare(event)">
-		</div>
-		<div class="generation">
-			<span>Generation</span>
-		</div>
-		<footer>
-			<button name="exit" onclick="Exit()">exit</button>
-		</footer>
-	</content>
-	<script src="kvadrat.js"></script>
-	<script src="../authorize/reg.js"></script>
+    </div>
+    <div id="field"></div>
+
+    <script src="./kvadrat.js"></script>
+    <script src="../authorize/reg.js"></script>
 </body>
+<footer>
+    <div id="gen">Generations: 0</div>
+    <button onclick="Exit()">Exit</button>
+</footer>
 
 </html>

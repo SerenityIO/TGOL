@@ -1,274 +1,271 @@
-var field = document.getElementById('field');
-var squareinf = [];
-
-var arrLS = JSON.parse(window.localStorage.getItem('squareinf'));
-
-var game = {
-	size: '20x10',
-	arr: [],
-	arr2: []
-};
-
-
-function handleSquare(event) {
-
-	var id = event.target.id;
-
-	if (id != 'field') {
-		if (event.target.style.backgroundColor === "") {
-			event.target.style.backgroundColor = "blue";
-			game.arr[id].selected = true;
-		}
-		else {
-			event.target.style.backgroundColor = "";
-			game.arr[id].selected = false;
-		}
-	}
-}
-
+var DataBase = (JSON.parse(window.localStorage.getItem('DataBase')))
 window.onload = function () {
-	redirect();
-	render();
+    redirect();
+    loadRender();
 };
+
 
 function redirect() {
-
-	var temp = JSON.parse(localStorage.getItem('DataBase'));
-	temp.forEach(element => {
-		if (element.isonline === true) {
-			//alert("Welcome back," + element.email);
-		}
-		else {
-			document.location.href = "../authorize/log.html";
-		}
-	});
+    var user = DataBase.find(element => element.isonline);
+    if (user) {
+        alert("Welcome back," + user.email);
+    } else {
+        document.location.href = "../authorize/log.html";
+    }
 }
 
-function render() {
-	// ToDo: Тут тільки реальне використовування тільки для першого разу. 
-	// ToDo: Ця функція має обновляти поля на основі даних в масиві
+var flashback = [];
 
-	var size = game.size.split('x');
-	var height = +size[1], width = +size[0];
-	var n = 0;
 
-	for (var i = 0; i < width; i++) {
-		for (var j = 0; j < height; j++) {
-			createUserSegment(n);
-			// if (game.arr[i + j].selected === true) {
-			// 	document.getElementById(i + j).style.backgroundColor = 'blue';
-			// }
-			// else
-			game.arr.push({ selected: false });
-			n++;
-		}
-	}
+var game = {
+    size: '10x20',
+    interval: null,
+    speed: 100,
+    arr: [],
+    generations: 0
 }
 
-function createUserSegment(sum) {
-	var div = document.createElement("div");
-	div.className = 'square';
-	div.id = sum;
-	document.getElementById("field").appendChild(div);
+var isPlaying = true;
+
+game.arr = createGrid();
+var grid;
+var gridGen;
+
+var field = document.getElementById('field');
+var table;
+
+function handleChangeSize(event) {
+    game.size = event.target.value;
+    fieldDelete();
+    grid = createGrid();
+    gridGen = createGrid();
+    table = createTable();
+    game.arr = createGrid();
+
+}
+
+function createTable() {
+    var size = game.size.split('x');
+    var cols = +size[1], rows = +size[0];
+    var table = document.createElement('table');
+
+    table.className = 'grid';
+
+    for (let i = 0; i < rows; i++) {
+        var row = document.createElement('tr');
+        row.className = 'row';
+
+        for (let j = 0; j < cols; j++) {
+            var cell = document.createElement('td');
+
+            cell.className = 'cell';
+            row.appendChild(cell);
+        }
+        table.appendChild(row);
+    }
+
+    //alive
+    table.addEventListener('click', event => {
+        if (!event.target.classList.contains('cell')) return;
+
+        var cell = event.target;
+        var rowIndex = cell.parentNode.rowIndex;
+        var columnIndex = cell.cellIndex;
+        var isalive = grid[rowIndex][columnIndex] === 1 ? true : false;
+
+
+        grid[rowIndex][columnIndex] = isalive ? 0 : 1;
+        cell.classList.toggle('alive', !isalive);
+    })
+    field.appendChild(table);
+    return table;
+}
+
+function pauseGame() {
+    isPlaying = false;
 }
 
 function clearField() {
-	// Done: Тут потрібно видаляти поля і в масиві game.arr 
-	while (field.lastChild) {
-		field.removeChild(field.lastChild);
-		game.arr.shift();
-	}
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            grid[i][j] = 0;
+            game.arr[i][j] = grid[i][j];
+        }
+    }
+    render();
+    game.generations = 0;
 }
 
-function Clear() {
-
-	clearField();
-	render();
-}
-function fieldSize() {
-	if (game.size === "20x10") {
-		var temp = document.getElementById('field');
-		temp.style.height = '150px';
-		temp.style.width = '300px';
-	}
-	if (game.size === "50x30") {
-		var temp = document.getElementById("field");
-		temp.style.width = '750px';
-		temp.style.height = '450px';
-	}
-	if (game.size === "70x50") {
-		var temp = document.getElementById('field');
-		temp.style.height = '750px';
-		temp.style.width = '1050px';
-	}
+function fieldDelete() {
+    while (field.lastChild) {
+        field.removeChild(field.lastChild);
+    }
 }
 
-function handleChangeSize(event) {
-	game.size = event.target.value;
-	clearField(game.size);
-	fieldSize(game.size);
-	render();
+function createGrid() {
+    var size = game.size.split('x');
+    var cols = +size[1], rows = +size[0];
+
+    const grid = [];
+
+    for (let i = 0; i < rows; i++) {
+        grid[i] = [];
+
+        for (let j = 0; j < cols; j++) {
+            grid[i][j] = 0;
+        }
+    }
+    return grid;
 }
 
 function randomGen() {
-	// Я преписав функцію ген. Слідкуй за прикладом кодінгу
-	// ToDo: перенеси робону з DOM в render()
-	var field;
+    for (let i = 0; i < game.arr.length; i++) {
+        for (let j = 0; j < game.arr[i].length; j++) {
+            game.arr[i][j] = Math.round(Math.random());
 
-	for (var i = 0; i < game.arr.length; i++) {
-		field = document.getElementById(i);
-		if (Math.floor(Math.random() * 4) === 1) {
-			field.style.backgroundColor = "blue";
-			game.arr[i].selected = true;
-		} else {
-			field.style.backgroundColor = "white";
-			game.arr[i].selected = false;
-		}
-	}
+        }
+    }
+    render();
+
 }
 
+function render() {
+    for (let i = 0; i < game.arr.length; i++) {
+        for (let j = 0; j < game.arr[i].length; j++) {
+            var cell = table.rows[i].cells[j];
+            var isAlive = game.arr[i][j];
 
-// function play() {
-// 	var size = game.size.split('x');
-// 	var height = +size[1], width = +size[0];
 
-// 	// ToDo: Тут надто багато хардкоду. Подивись алгоритм в тасці 
+            cell.classList.toggle('alive', isAlive);
+        }
 
-// 	for (var i = width; i !== 0; i--) {
-// 		for (var j = height; j !== 0; j++) {
-// 			var neighboors = 0;
+    }
 
-// 			if (i > 0) if (game.arr[i - 1][j]) neighboors++;
-// 			if (i > 0 && j > 0) if (game.arr[i - 1][j + 1]) neighboors++;
-// 			if (i > 0 && j < height - 1) if (game.arr[i - 1][j + 1]) neighboors++;
-// 			if (j < height - 1) if (game.arr[i][j + 1]) neighboors++;
-// 			if (j > 0) if (game.arr[i][j - 1]) neighboors++;
-// 			if (i < width - 1) if (game.arr[i + 1][j]) neighboors++;
-// 			if (i < width - 1 && j > 0) if (game.arr[i + 1][j - 1]) neighboors++;
-// 			if (i < width - 1 && height - 1) if (game.arr[i + 1][j + 1]) neighboors++;
-// 			if (game.arr[i][j] && (neighboors < 2 || neighboors > 3)) game.arr2[i][j] = false;
-// 			if (!game.arr[i][j] && neighboors === 3) game.arr2[i][j] = true;
-// 		}
-// 	}
-// }
+}
+
+function slow() {
+    isPlaying = true;
+    game.speed += 500;
+    play();
+}
+
+function fast() {
+    isPlaying = true;
+    if (game.speed > 500) {
+        game.speed -= 500;
+        play();
+    }
+}
 
 function play() {
-	setInterval(Play(), 2000);
+    isPlaying = true;
+    if (game.interval) {
+        clearInterval(game.interval);
+    }
+    game.interval = setInterval(play1, game.speed);
 }
 
-function Play() {
-	var neighbors = 0;
-	var temp;
+function play1() {
+if (isPlaying === false) return;
+    var gridGen = game.arr.slice();
+    var size = game.size.split('x');
+    var cols = +size[1], rows = +size[0];
+
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            var neighbors = 0;
+            var isalive = game.arr[i][j];
+
+            if (i - 1 >= 0) if (game.arr[i - 1][j] === 1) neighbors++;
+            if (i - 1 >= 0 && j - 1 >= 0) if (game.arr[i - 1][j - 1] === 1) neighbors++;
+            if (i - 1 >= 0 && j + 1 < cols) if (game.arr[i - 1][j + 1] === 1) neighbors++;
+            if (j - 1 >= 0) if (game.arr[i][j - 1] === 1) neighbors++;
+            if (j + 1 < cols) if (game.arr[i][j + 1] === 1) neighbors++;
+            if (i + 1 < rows) if (game.arr[i + 1][j]) neighbors++;
+            if (i + 1 < rows && j - 1 >= 0) if (game.arr[i + 1][j - 1] === 1) neighbors++;
+            if (i + 1 < rows && j + 1 < cols) if (game.arr[i + 1][j + 1] === 1) neighbors++;
+
+            if (isalive) {
+                if (neighbors < 2 || neighbors > 3) {
+                    gridGen[i][j] = 0;
+                }
+                else if (neighbors === 2 || neighbors === 3) {
+                    gridGen[i][j] = 1;
+                }
+            }
+            else {
+                if (neighbors === 3) {
+                    gridGen[i][j] = 1;
+                }
+            }
+        }
+    }
+
+    grid = gridGen.slice();
+    game.arr = gridGen.slice();
+
+    render();
+    var g = document.getElementById('gen');
+    g.innerText = 'Generations: ' + game.generations;
+    game.generations++;
+}
+
+function compare(arr1, arr2) {
+    // debugger
+    let count = 0;
+    var size = game.size.split('x');
+    var cols = +size[1], rows = +size[0];
 
 
+    for (let k = 0; k < arr1.length; k++) {
+        var h = arr1[k];
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                if (h[i][j] === arr2[i][j]) count++;
+            }
+        }
+    }
+    if (count === arr2.length) return true;
+}
 
-	for (var k = 0; k < 200; k++) {
-		if (game.arr[k]) {
-			neighbors = 0;
+function saveSettings() {
+    DataBase[userID].settings.splice(0, 1, game);
+    window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
 
-			if (k === 0) {
-				temp = k + 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 21;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-			}
-			else if (k >= 1 && k <= 18) {
-				temp = k - 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 19;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 21;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-			}
-			else if (k === 19) {
-				temp = k - 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 19;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
 
-			}
-			else if (k === 180) {
-				temp = k - 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 19;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-			}
-			else if (k === 199) {
-				temp = k - 21;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-			}
-			else if ((((k - 9) / 2) % 10) === 5 && k >= 39 && k <= 179) {
-				temp = k - 21;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 19;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-			}
-			else if ((k / 2 % 10 == 0) && k != 0 && k != 180) {				
-				temp = k - 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 19;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 21;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-			}
-			else if (k >= 21 && k <= 178) {
-				temp = k - 21;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 19;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k - 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 1;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 19;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 20;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-				temp = k + 21;
-				(game.arr[temp].selected === true) ? neighbors++ : {};
-			}
+}
 
-			if (game.arr[k].selected === false) {
-				if (neighbors == 3) {
-					game.arr[k].selected = true;
-					document.getElementById(k).selected = true;
-					document.getElementById(k).style.backgroundColor = 'blue';
-				}
-			}
-			if (game.arr[k].selected === true) {
-				if (neighbors > 3 || neighbors < 2) {
-					game.arr[k].selected = false;
-					document.getElementById(k).selected = false;
-					document.getElementById(k).style.backgroundColor = 'white';
-				}
-			}
-		}
-	}
+window.onbeforeunload = function () {
+    // saveSettings();
+}
 
+const userID = findUserID();
+
+function findUserID() {
+    for (var i = 0; i < DataBase.length; i++) {
+        if (DataBase[i].isonline === true) return i;
+    }
+}
+
+function loadRender() {
+    fieldDelete();
+    // let size = DataBase[userID].settings[0].size.split('x');
+    // game.size = DataBase[userID].settings[0].size;
+    grid = createGrid();
+    table = createTable();
+    gridGen = createGrid();
+
+    let selectSize = document.getElementsByTagName('select');
+
+    selectSize.value = DataBase[userID].settings[0].size;
+
+    for (let i = 0; i < size[0]; i++) {
+        for (let j = 0; j < size[1]; j++) {
+            //   console.log(grid[i][j]);
+            grid[i][j] = DataBase[userID].settings[0].arr[i][j];
+
+        }
+    }
+
+    render();
 }
