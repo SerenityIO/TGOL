@@ -38,10 +38,9 @@ function handleChangeSize(event) {
     game.size = event.target.value;
     fieldDelete();
     grid = createGrid();
-    gridGen = createGrid();
     table = createTable();
+    gridGen = createGrid();
     game.arr = createGrid();
-
 }
 
 function createTable() {
@@ -119,14 +118,14 @@ function createGrid() {
 }
 
 function randomGen() {
-    for (let i = 0; i < game.arr.length; i++) {
-        for (let j = 0; j < game.arr[i].length; j++) {
-            game.arr[i][j] = Math.round(Math.random());
-
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            grid[i][j] = Math.round(Math.random());
+            game.arr[i][j] = grid[i][j];
         }
     }
     render();
-
+   
 }
 
 function render() {
@@ -167,23 +166,22 @@ function play() {
 
 function play1() {
 if (isPlaying === false) return;
-    var gridGen = game.arr.slice();
     var size = game.size.split('x');
     var cols = +size[1], rows = +size[0];
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             var neighbors = 0;
-            var isalive = game.arr[i][j];
+            var isalive = grid[i][j];
 
-            if (i - 1 >= 0) if (game.arr[i - 1][j] === 1) neighbors++;
-            if (i - 1 >= 0 && j - 1 >= 0) if (game.arr[i - 1][j - 1] === 1) neighbors++;
-            if (i - 1 >= 0 && j + 1 < cols) if (game.arr[i - 1][j + 1] === 1) neighbors++;
-            if (j - 1 >= 0) if (game.arr[i][j - 1] === 1) neighbors++;
-            if (j + 1 < cols) if (game.arr[i][j + 1] === 1) neighbors++;
-            if (i + 1 < rows) if (game.arr[i + 1][j]) neighbors++;
-            if (i + 1 < rows && j - 1 >= 0) if (game.arr[i + 1][j - 1] === 1) neighbors++;
-            if (i + 1 < rows && j + 1 < cols) if (game.arr[i + 1][j + 1] === 1) neighbors++;
+            if (i - 1 >= 0) if (grid[i - 1][j] === 1) neighbors++;
+            if (i - 1 >= 0 && j - 1 >= 0) if (grid[i - 1][j - 1] === 1) neighbors++;
+            if (i - 1 >= 0 && j + 1 < cols) if (grid[i - 1][j + 1] === 1) neighbors++;
+            if (j - 1 >= 0) if (grid[i][j - 1] === 1) neighbors++;
+            if (j + 1 < cols) if (grid[i][j + 1] === 1) neighbors++;
+            if (i + 1 < rows) if (grid[i + 1][j]) neighbors++;
+            if (i + 1 < rows && j - 1 >= 0) if (grid[i + 1][j - 1] === 1) neighbors++;
+            if (i + 1 < rows && j + 1 < cols) if (grid[i + 1][j + 1] === 1) neighbors++;
 
             if (isalive) {
                 if (neighbors < 2 || neighbors > 3) {
@@ -201,8 +199,13 @@ if (isPlaying === false) return;
         }
     }
 
-    grid = gridGen.slice();
-    game.arr = gridGen.slice();
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            grid[i][j] = gridGen[i][j];
+            game.arr[i][j] = gridGen[i][j];
+            gridGen[i][j] = 0;
+        }
+    }
 
     render();
     var g = document.getElementById('gen');
