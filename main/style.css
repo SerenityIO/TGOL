@@ -33,7 +33,7 @@ table.grid {
 }
 
 table.grid td.cell {
-    background-color: #444444;
+    background-color: white;
     border: 1px solid black;
     box-sizing: border-box;
     height: 15px;

@@ -21,38 +21,49 @@ h1 {
     color: white;
 }
 
-.first {
-    margin-bottom: 3em
+.third {
+    display: flex;
+    width: 80%;
+    flex-direction: row;
 }
 
 input[type="password"] {
-    background: url(../img/pass_icon.png) no-repeat;
-    background-position:3px 3px ;
     background-size: 8%;
     padding-left: 25px;
 }
+
 input[type="email"] {
-    background: url(../img/email_icon.png) no-repeat;
-    background-position:1.5px 4px ;
     background-size: 8%;
     padding-left: 25px;
 }
+
 div {
     display: flex;
     flex-direction: column;
 }
 
+.far {
+    padding-left: 18px;
+    padding-top: 20px;
+    position: absolute;
+}
+
+.fas {
+    padding-left: 18px;
+    padding-top: 20px;
+    position: absolute;
+}
+
 .box {
-    margin: 5%;
-    height: 18rem;
-    width: 23rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    border: solid black;
-    border-radius: 10px;
-    box-shadow: 5px 5px green;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    list-style: none;
+    background-color: white;
 }
 
 content {
@@ -67,30 +78,31 @@ form {
     align-items: center;
 }
 
-.box {
-    background-color: white;
-}
-
-form>div>input {
+input {
     width: 15rem;
     border-radius: 5px;
     margin: 0.7rem;
     height: 2rem;
-    
+    border: 1px solid rgb(218, 213, 213);
 }
 
-form>div>button {
+button {
     color: white;
     margin: 0.2rem;
     width: 15.5rem;
     height: 2rem;
     background-color: #1E90FF;
     border-radius: 0.4rem;
+    border: none;
 }
 
-form>div>button>a {
+button>a {
     text-decoration: none;
     outline: none;
     color: white;
 }
 
+a {
+    color: #1E90FF;
+    text-decoration: none;
+}
