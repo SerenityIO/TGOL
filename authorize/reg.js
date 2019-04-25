@@ -57,13 +57,15 @@ function Login(event) {
                 window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
                 document.location.href = "../main/field.html";
             }
+            else {
+                let textarea = document.getElementById('error');
+                textarea.value='Invalid user';
+                textarea.background = 'red';
+            }
             i++;
         });
-    } else {
-        alert("No user");
-    }
+    } 
 }
-
 
 function Exit() {
     var i = 0;

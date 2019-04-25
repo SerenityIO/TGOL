@@ -54,6 +54,16 @@ div {
     position: absolute;
 }
 
+form label {
+	position:relative;
+}
+.errorMsg {
+	position:absolute;
+	left:230px;
+	width:300px;
+	color:red;
+}
+
 .box {
     box-sizing: border-box;
     margin: 0;
@@ -102,7 +112,13 @@ button>a {
     color: white;
 }
 
+textarea {
+    border:none;
+    margin-top:10px;
+  }
+
 a {
     color: #1E90FF;
     text-decoration: none;
 }
+

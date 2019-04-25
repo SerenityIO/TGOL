@@ -252,24 +252,28 @@ function findUserID() {
 }
 
 function loadRender() {
-    fieldDelete();
-    // let size = DataBase[userID].settings[0].size.split('x');
-    // game.size = DataBase[userID].settings[0].size;
-    grid = createGrid();
-    table = createTable();
-    gridGen = createGrid();
+    let temp = JSON.parse(localStorage.getItem("DataBase"));
+    if (temp === null) {
+        render;
+    }
+    else {
+        fieldDelete();
+        
+        grid = createGrid();
+        table = createTable();
+        gridGen = createGrid();
 
-    let selectSize = document.getElementsByTagName('select');
+        let selectSize = document.getElementsByTagName('select');
 
-    selectSize.value = DataBase[userID].settings[0].size;
+        selectSize.value = DataBase[userID].settings[0].size;
 
-    for (let i = 0; i < size[0]; i++) {
-        for (let j = 0; j < size[1]; j++) {
-            //   console.log(grid[i][j]);
-            grid[i][j] = DataBase[userID].settings[0].arr[i][j];
+        for (let i = 0; i < size[0]; i++) {
+            for (let j = 0; j < size[1]; j++) {
+                //   console.log(grid[i][j]);
+                grid[i][j] = DataBase[userID].settings[0].arr[i][j];
 
+            }
         }
     }
-
     render();
 }

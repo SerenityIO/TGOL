@@ -23,7 +23,8 @@
     </header>
     <content>
         <div class="box">
-            <form name="authorization" onSubmit="Login(event);">
+            <form id="forma" name="authorization" onSubmit="Login(event);">
+                    <div> <textarea id="error" readonly></textarea></div>
                 <div class="first">
                     <div>
                         <input type="email" name="email" placeholder="E-mail" required>
