@@ -25,7 +25,7 @@ var game = {
     generations: 0
 }
 
-var isPlaying = true;
+
 
 game.arr = createGrid();
 var grid;
@@ -80,9 +80,7 @@ function createTable() {
     return table;
 }
 
-function pauseGame() {
-    isPlaying = false;
-}
+
 
 function clearField() {
     for (let i = 0; i < grid.length; i++) {
@@ -125,7 +123,7 @@ function randomGen() {
         }
     }
     render();
-   
+
 }
 
 function render() {
@@ -142,14 +140,18 @@ function render() {
 
 }
 
+function pauseGame() {
+    clearInterval(game.interval);
+}
+
 function slow() {
-    isPlaying = true;
+
     game.speed += 500;
     play();
 }
 
 function fast() {
-    isPlaying = true;
+
     if (game.speed > 500) {
         game.speed -= 500;
         play();
@@ -157,7 +159,7 @@ function fast() {
 }
 
 function play() {
-    isPlaying = true;
+
     if (game.interval) {
         clearInterval(game.interval);
     }
@@ -165,7 +167,6 @@ function play() {
 }
 
 function play1() {
-if (isPlaying === false) return;
     var size = game.size.split('x');
     var cols = +size[1], rows = +size[0];
 
