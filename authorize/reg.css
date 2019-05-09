@@ -55,13 +55,14 @@ div {
 }
 
 form label {
-	position:relative;
+    position: relative;
 }
+
 .errorMsg {
-	position:absolute;
-	left:230px;
-	width:300px;
-	color:red;
+    position: absolute;
+    left: 230px;
+    width: 300px;
+    color: red;
 }
 
 .box {
@@ -112,13 +113,15 @@ button>a {
     color: white;
 }
 
-textarea {
-    border:none;
-    margin-top:10px;
-  }
+#errorbox {
+    height: 30px;
+    width: 80%;
+    color:#000000;
+    font-size: 16px;
+    text-align: center;
+}
 
 a {
     color: #1E90FF;
     text-decoration: none;
 }
-

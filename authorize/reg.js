@@ -58,9 +58,9 @@ function Login(event) {
                 document.location.href = "../main/field.html";
             }
             else {
-                let textarea = document.getElementById('error');
-                textarea.value='Invalid user';
-                textarea.background = 'red';
+                let error = document.getElementById('errorbox');
+                error.innerText="Incorrect Email or password";
+                error.style.backgroundColor="#f13838";
             }
             i++;
         });

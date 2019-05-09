@@ -258,14 +258,14 @@ function loadRender() {
     }
     else {
         fieldDelete();
-        
+
         grid = createGrid();
         table = createTable();
         gridGen = createGrid();
 
         let selectSize = document.getElementsByTagName('select');
-
         selectSize.value = DataBase[userID].settings[0].size;
+        debugger
 
         for (let i = 0; i < size[0]; i++) {
             for (let j = 0; j < size[1]; j++) {
