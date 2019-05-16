@@ -3,16 +3,15 @@ window.onload = function () {
     redirect();
     loadFromBase();
     table = createTable();
+    grid = createGrid();
+    gridGen = createGrid();
     render();
 };
 
 function loadFromBase() {
-    
-
     for (var key in DataBase) {
         game = DataBase[userID].settings[key];
     }
-
     let temp =document.getElementById('size');
     console.log(temp);
     temp.value = game.size;
