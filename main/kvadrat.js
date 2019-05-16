@@ -1,14 +1,23 @@
 var DataBase = (JSON.parse(window.localStorage.getItem('DataBase')))
 window.onload = function () {
+
     redirect();
-    loadRender();
+   loadFromBase(); 
+   table=createTable();
+
+    render();
 };
 
+function loadFromBase() {
+    for (var key in DataBase) {
+        game = DataBase[userID].settings[key];
+    }
+}
 
 function redirect() {
     var user = DataBase.find(element => element.isonline);
     if (user) {
-        alert("Welcome back," + user.email);
+        //alert("Welcome back," + user.email);
     } else {
         document.location.href = "../authorize/log.html";
     }
@@ -32,8 +41,7 @@ var grid;
 var gridGen;
 
 var field = document.getElementById('field');
-var table;
-
+var table ;
 function handleChangeSize(event) {
     game.size = event.target.value;
     fieldDelete();
@@ -41,6 +49,7 @@ function handleChangeSize(event) {
     table = createTable();
     gridGen = createGrid();
     game.arr = createGrid();
+    saveSettings();
 }
 
 function createTable() {
@@ -127,6 +136,8 @@ function randomGen() {
 }
 
 function render() {
+
+
     for (let i = 0; i < game.arr.length; i++) {
         for (let j = 0; j < game.arr[i].length; j++) {
             var cell = table.rows[i].cells[j];
@@ -137,7 +148,6 @@ function render() {
         }
 
     }
-
 }
 
 function pauseGame() {
@@ -214,33 +224,9 @@ function play1() {
     game.generations++;
 }
 
-function compare(arr1, arr2) {
-    // debugger
-    let count = 0;
-    var size = game.size.split('x');
-    var cols = +size[1], rows = +size[0];
-
-
-    for (let k = 0; k < arr1.length; k++) {
-        var h = arr1[k];
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < cols; j++) {
-                if (h[i][j] === arr2[i][j]) count++;
-            }
-        }
-    }
-    if (count === arr2.length) return true;
-}
-
 function saveSettings() {
     DataBase[userID].settings.splice(0, 1, game);
     window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
-
-
-}
-
-window.onbeforeunload = function () {
-    // saveSettings();
 }
 
 const userID = findUserID();
@@ -251,29 +237,3 @@ function findUserID() {
     }
 }
 
-function loadRender() {
-    let temp = JSON.parse(localStorage.getItem("DataBase"));
-    if (temp === null) {
-        render;
-    }
-    else {
-        fieldDelete();
-
-        grid = createGrid();
-        table = createTable();
-        gridGen = createGrid();
-
-        let selectSize = document.getElementsByTagName('select');
-        selectSize.value = DataBase[userID].settings[0].size;
-        debugger
-
-        for (let i = 0; i < size[0]; i++) {
-            for (let j = 0; j < size[1]; j++) {
-                //   console.log(grid[i][j]);
-                grid[i][j] = DataBase[userID].settings[0].arr[i][j];
-
-            }
-        }
-    }
-    render();
-}
