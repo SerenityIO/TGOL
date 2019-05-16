@@ -34,9 +34,8 @@ var game = {
     generations: 0
 }
 
-
-
 game.arr = createGrid();
+
 var grid;
 var gridGen;
 
