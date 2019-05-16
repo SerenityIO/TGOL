@@ -1,17 +1,21 @@
 var DataBase = (JSON.parse(window.localStorage.getItem('DataBase')))
 window.onload = function () {
-
     redirect();
-   loadFromBase(); 
-   table=createTable();
-
+    loadFromBase();
+    table = createTable();
     render();
 };
 
 function loadFromBase() {
+    
+
     for (var key in DataBase) {
         game = DataBase[userID].settings[key];
     }
+
+    let temp =document.getElementById('size');
+    console.log(temp);
+    temp.value = game.size;
 }
 
 function redirect() {
@@ -40,7 +44,7 @@ var grid;
 var gridGen;
 
 var field = document.getElementById('field');
-var table ;
+var table;
 function handleChangeSize(event) {
     game.size = event.target.value;
     fieldDelete();
