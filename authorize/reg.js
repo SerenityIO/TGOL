@@ -21,12 +21,18 @@ function RegisterUser(event) {
 
 
         if (F_pass === S_pass) {
-          
+
             DataBase.push({
                 email: email,
                 pass: F_pass,
                 isonline: false,
-                settings: [email,],
+                settings: [{
+                    size: '10x20',
+                    interval: null,
+                    speed: 100,
+                    arr: [],
+                    generations: 0
+                }],
             });
 
             window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
@@ -59,12 +65,12 @@ function Login(event) {
             }
             else {
                 let error = document.getElementById('errorbox');
-                error.innerText="Incorrect Email or password";
-                error.style.backgroundColor="#f13838";
+                error.innerText = "Incorrect Email or password";
+                error.style.backgroundColor = "#f13838";
             }
             i++;
         });
-    } 
+    }
 }
 
 function Exit() {
