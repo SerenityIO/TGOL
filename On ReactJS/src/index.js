@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import "./styles/mainStyles.css";
+import MainPage from './App/MainPage/MainPage';
 
-class Text extends React.Component {
-    render() {
-        return <h1>{this.props.name}{this.props.count}</h1>;
-    }
-}
 
-function Interface(props) {
-    return <button onClick={props.todo}>{props.buttonName}</button>
-}
+ReactDOM.render(
+    <MainPage />,document.getElementById('root')
+);
+
 
 var counter = 0;
 
@@ -105,8 +102,5 @@ class Element extends React.Component {
     }
 }
 
-ReactDOM.render(
-    <Element />,
-    document.getElementById('root')
-);
+
 
