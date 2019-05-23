@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5vw;
+    align-items: center;
+    background-image: url(../img/fon.jpg);
+    background-repeat: no-repeat;
+    color: #ffffff;
+}
+z
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    
+}
+
+header div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+button {
+    height: 25px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.cell {
+    background-color: rgb(61, 61, 61);
+    border: 1px solid black;
+    box-sizing: border-box;
+    height: 15px;
+    width: 15px;
+    
+}
+
+table {
+    border:2px #000000;
+    margin: 2rem auto;
+    box-sizing: border-box;
+    border-spacing: 0px;
+    table-layout: fixed;
+}
+
