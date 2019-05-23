@@ -3,7 +3,7 @@ import React from 'react';
 class Cell extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { active: true };
+        this.state = { active: false };
     }
     render() {
         return <td className="cell" />
@@ -21,16 +21,54 @@ class TableRow extends React.Component {
     }
 }
 
+class Field extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let temp = this.props.tableSize;
+        let sizeTable = temp.split('x');
+        const tableFull = [];
+        for (let i = 0; i < sizeTable[0]; i++) {
+            tableFull.push(<TableRow tableSize={this.props.tableSize} />)
+        }
+        return (
+            <table>
+                <tbody>
+                    {tableFull}
+                </tbody>
+            </table>
+        );
+    }
+}
+
+
+
 class MainPage extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            Arr: []
+            tableSize: "10x20",
+            tableSize1: [],
+            arr: []
+        };
+        this.handleChangeSize = this.handleChangeSize.bind(this);
+    }
+
+    randomGen = () => {
+        let tableFull = this.state.arr;
+        for (let i = 0; i < this.state.tableSize1[0]; i++) {
+            for (let j = 0; j < this.state.tableSize1[1]; j++) {
+                debugger
+                this.setState.arr[i][j] = Math.round(Math.random());
+                
+            }
         }
-    };
+
+    }
 
     handleChangeSize(e) {
+        
         this.setState({
             tableSize: e.target.value
         })
@@ -38,15 +76,19 @@ class MainPage extends React.Component {
 
     componentDidUpdate() {
         //Локал сторедж
-    };
-
-    render() {
-        let temp = this.props.tableSize;
+        debugger
+        let temp = this.state.tableSize;
         let sizeTable = temp.split('x');
-        var tableFull = [];
+        const tableFull = [];
         for (let i = 0; i < sizeTable[0]; i++) {
             tableFull.push(<TableRow tableSize={this.tableSize} />)
         }
+        this.state.arr = tableFull;
+        this.state.tableSize1 = sizeTable;
+    };
+
+    render() {
+
         return (
             <div>
                 <header>
@@ -57,7 +99,7 @@ class MainPage extends React.Component {
                         <button className="userInterface">Clear</button>
                         <button className="userInterface">Slow</button>
                         <button className="userInterface">Fast</button>
-                        <button className="userInterface">Seed</button>
+                        <button onClick={this.randomGen} className="userInterface">Seed</button>
                         <select onChange={this.handleChangeSize} id="size">
                             <option value="10x20">10x20</option>
                             <option value="30x50">30x50</option>
@@ -66,17 +108,7 @@ class MainPage extends React.Component {
                     </div>
                 </header>
                 <main>
-                    <table>
-                        <tbody>
-                            {this.Arr.map((val) => (
-                                <td
-                                    id={val.id}
-                                    className="cell"
-
-                                ></td>
-                            ))}
-                        </tbody>
-                    </table>
+                    <Field tableSize={this.state.tableSize} />
                 </main>
                 <footer>
                     <h2>Generations: </h2>

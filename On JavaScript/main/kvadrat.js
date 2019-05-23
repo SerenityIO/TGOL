@@ -134,7 +134,6 @@ function randomGen() {
         }
     }
     render();
-
 }
 
 function render() {
