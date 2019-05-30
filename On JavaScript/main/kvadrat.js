@@ -170,7 +170,6 @@ function fast() {
 }
 
 function play() {
-
     if (game.interval) {
         clearInterval(game.interval);
     }
