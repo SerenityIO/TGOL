@@ -94,8 +94,11 @@ class Main extends React.Component {
             }
         }
         this.setState({
-            grid: temp
+            grid: temp,
+            gen: 0
         });
+        this.stopGame();
+
     }
 
     createGrid = (size) => {
