@@ -7,9 +7,9 @@ class Main extends React.Component {
             tableSize: "10x20",
             grid: [],
             gen: 0,
+            speed: 100,
         };
         this.handleChangeSize = this.handleChangeSize.bind(this);
-        //   this.stopGame = this.stopGame.bind(this);
         this.playGame = this.playGame.bind(this);
         this.playGame1 = this.playGame1.bind(this);
         this.clearField = this.clearField.bind(this);
@@ -21,15 +21,40 @@ class Main extends React.Component {
         this.createGrid(this.state.tableSize);
     };
 
-    playGame() {
+    stopGame = () => {
+        if (this.playing) {
+            clearInterval(this.playing);
+        }
+    }
 
-        setInterval(this.playGame1, 1000);
+    slow = () => {
+        this.state.speed += 100;
+        if (this.playing) {
+            clearInterval(this.playing);
+        }
+        this.playing = setInterval(this.playGame1, this.state.speed);
+    }
+
+    fast = () => {
+        if (this.state.speed > 200)
+            this.state.speed -= 100;
+        if (this.playing) {
+            clearInterval(this.playing);
+        }
+        this.playing = setInterval(this.playGame1, this.state.speed);
+    }
+
+    playGame() {
+        if (this.playing) {
+            clearInterval(this.playing);
+        }
+        this.playing = setInterval(this.playGame1, this.state.speed);
     }
 
     playGame1() {
-        //  debugger
+
         let temp = this.state.grid;
-        let nextGen = temp;
+        let nextGen = JSON.parse(JSON.stringify(this.state.grid));
         let tempGen = this.state.gen;
 
         let size = this.state.tableSize;
@@ -41,28 +66,17 @@ class Main extends React.Component {
             for (let j = 0; j < temp[i].length; j++) {
                 let neighbors = 0;
 
-                if (i - 1 >= 0) if (temp[i - 1][j].isActive == 1) neighbors++;
-                if (i - 1 >= 0 && j - 1 >= 0) if (temp[i - 1][j - 1].isActive == 1) neighbors++;
-                if (i - 1 >= 0 && j + 1 < cols) if (temp[i - 1][j + 1].isActive == 1) neighbors++;
-                if (j - 1 >= 0) if (temp[i][j - 1].isActive == 1) neighbors++;
-                if (j + 1 < cols) if (temp[i][j + 1].isActive == 1) neighbors++;
+                if (i - 1 >= 0) if (temp[i - 1][j].isActive === true) neighbors++;
+                if (i - 1 >= 0 && j - 1 >= 0) if (temp[i - 1][j - 1].isActive === true) neighbors++;
+                if (i - 1 >= 0 && j + 1 < cols) if (temp[i - 1][j + 1].isActive === true) neighbors++;
+                if (j - 1 >= 0) if (temp[i][j - 1].isActive === true) neighbors++;
+                if (j + 1 < cols) if (temp[i][j + 1].isActive === true) neighbors++;
                 if (i + 1 < rows) if (temp[i + 1][j].isActive) neighbors++;
-                if (i + 1 < rows && j - 1 >= 0) if (temp[i + 1][j - 1].isActive == 1) neighbors++;
-                if (i + 1 < rows && j + 1 < cols) if (temp[i + 1][j + 1].isActive == 1) neighbors++;
+                if (i + 1 < rows && j - 1 >= 0) if (temp[i + 1][j - 1].isActive === true) neighbors++;
+                if (i + 1 < rows && j + 1 < cols) if (temp[i + 1][j + 1].isActive === true) neighbors++;
+                if (temp[i][j].isActive && (neighbors < 2 || neighbors > 3)) nextGen[i][j].isActive = false;
+                if (!temp[i][j].isActive && neighbors === 3) nextGen[i][j].isActive = true;
 
-                if (temp[i][j].isActive) {
-                    if (neighbors < 2 || neighbors > 3) {
-                        nextGen[i][j].isActive = 0;
-                    }
-                    else if (neighbors === 2 || neighbors === 3) {
-                        nextGen[i][j].isActive = 1;
-                    }
-                }
-                else {
-                    if (neighbors === 3) {
-                        nextGen[i][j].isActive = 1;
-                    }
-                }
             }
         }
         tempGen++;
@@ -76,7 +90,7 @@ class Main extends React.Component {
         let temp = this.state.grid;
         for (let i = 0; i < temp.length; i++) {
             for (let j = 0; j < temp[i].length; j++) {
-                temp[i][j].isActive = 0;
+                temp[i][j].isActive = false;
             }
         }
         this.setState({
@@ -124,7 +138,9 @@ class Main extends React.Component {
         let temp = this.state.grid;
         for (let i = 0; i < temp.length; i++) {
             for (let j = 0; j < temp[i].length; j++) {
-                temp[i][j].isActive = Math.round(Math.random());
+                let stan = Math.round(Math.random());
+                if (stan == 1) temp[i][j].isActive = true;
+                if (stan == 0) temp[i][j].isActive = false;
             }
         }
         this.setState({
@@ -139,10 +155,10 @@ class Main extends React.Component {
                 <div className="centerUI">
                     <div className="blockUI">
                         <button className="userInterface" onClick={this.playGame}>Play</button>
-                        <button className="userInterface">Pause</button>
+                        <button className="userInterface" onClick={this.stopGame}>Pause</button>
                         <button className="userInterface" onClick={this.clearField}>Clear</button>
-                        <button className="userInterface">Slow</button>
-                        <button className="userInterface">Fast</button>
+                        <button className="userInterface" onClick={this.slow}>Slow</button>
+                        <button className="userInterface" onClick={this.fast}>Fast</button>
                         <button className="userInterface" onClick={this.randomGen}>Seed</button>
                         <select onChange={this.handleChangeSize} id="size">
                             <option value="10x20">10x20</option>
