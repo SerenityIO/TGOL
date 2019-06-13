@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { withRouter } from "react-router-dom";
+
 
 class Auth extends React.Component {
   handleSubmit = e => {
@@ -48,4 +50,4 @@ class Auth extends React.Component {
 
 const Auth1 = Form.create({ name: 'normal_login' })(Auth);
 
-export default Auth1;
+export default withRouter(Auth1);

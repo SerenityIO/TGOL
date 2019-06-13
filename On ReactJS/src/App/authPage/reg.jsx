@@ -8,6 +8,8 @@ import {
     Button,
     AutoComplete,
 } from 'antd';
+import { withRouter } from "react-router-dom";
+
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -60,6 +62,10 @@ class RegistrationForm extends React.Component {
         this.setState({ autoCompleteResult });
     };
 
+    toAuth = () => {
+        this.props.history.push('/auth');
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const { autoCompleteResult } = this.state;
@@ -100,7 +106,7 @@ class RegistrationForm extends React.Component {
         ));
 
         return (
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+            <Form onSubmit={this.toAuth}{...formItemLayout} onSubmit={this.handleSubmit}>
                 <Form.Item label="E-mail">
                     {getFieldDecorator('email', {
                         rules: [
@@ -167,4 +173,4 @@ class RegistrationForm extends React.Component {
 
 const RegistrationForm1 = Form.create({ name: 'register' })(RegistrationForm);
 
-export default RegistrationForm1;
+export default withRouter(RegistrationForm1);

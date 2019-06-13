@@ -7,12 +7,19 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import 'antd/dist/antd.css';
 import RegistrationForm1 from './App/authPage/reg.jsx';
 
-ReactDOM.render((
-    
-        <Router >
-            <Route path='/' component={RegistrationForm1} />
-            <Route path='/authorize' component={Auth1} />
-            <Route path='/field' component={Main} />
-        </Router >
-    
-), document.getElementById('root'));
+class App extends React.Component {
+    render() {
+        return (
+            <Router >
+                <React.Fragment>
+                    <Route path='/' exact component={RegistrationForm1} />
+                    <Route path='/reg' exact component={RegistrationForm1} />
+                    <Route path='/auth' component={Auth1} />
+                    <Route path='/field' component={Main} />
+                </React.Fragment>
+            </Router >
+        );
+    }
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
