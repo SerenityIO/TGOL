@@ -2,13 +2,29 @@ import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { withRouter } from "react-router-dom";
 
+let DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
+console.log('Base', DataBase);
 
 class Auth extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+
       if (!err) {
         console.log('Received values of form: ', values);
+        debugger
+        if (DataBase && DataBase.length) {
+          let i = 0;
+          DataBase.forEach(element => {
+            if (values.username === element.nickname && values.password === element.password) {
+              element.isOnline = true;
+              element.userId = i;
+              window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
+              this.props.history.push('/field');
+            }
+            i++;
+          });
+        }
       }
     });
   };

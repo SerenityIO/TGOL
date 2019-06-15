@@ -10,6 +10,8 @@ import {
 } from 'antd';
 import { withRouter } from "react-router-dom";
 
+let DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
+console.log('DataBase', DataBase);
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -23,9 +25,47 @@ class RegistrationForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
+            let temp = 0;
             if (!err) {
-                window.localStorage.setItem('Database', JSON.stringify(values));
-                console.log('Received values of form: ', values);
+                temp = 0;
+                if (DataBase.length !== 0) {
+                    DataBase.forEach(comp => {
+                        debugger
+                        if (comp.email === values.email || comp.nickname === values.nickname) {
+                            debugger
+                            temp = 1;
+                        }
+
+                        else {
+                            debugger
+                            DataBase.push(
+                                {
+                                    nickname: values.nickname,
+                                    email: values.email,
+                                    password: values.password,
+                                    isOnline: false
+                                }
+                            );
+                            window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
+                            this.props.history.push('/auth');
+                        }
+                    });
+                    if (temp === 1) {
+                        alert('this user already exists');
+                    }
+                }
+                else {
+                    DataBase.push(
+                        {
+                            nickname: values.nickname,
+                            email: values.email,
+                            password: values.password,
+                            isOnline: false
+                        }
+                    );
+                    window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
+                    this.props.history.push('/auth');
+                }
             }
         });
     };
@@ -62,7 +102,7 @@ class RegistrationForm extends React.Component {
         this.setState({ autoCompleteResult });
     };
 
-    toAuth = () => {
+    toLogin = () => {
         this.props.history.push('/auth');
     }
 
@@ -106,7 +146,7 @@ class RegistrationForm extends React.Component {
         ));
 
         return (
-            <Form onSubmit={this.toAuth}{...formItemLayout} onSubmit={this.handleSubmit}>
+            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                 <Form.Item label="E-mail">
                     {getFieldDecorator('email', {
                         rules: [
@@ -165,6 +205,7 @@ class RegistrationForm extends React.Component {
                     <Button type="primary" htmlType="submit">
                         Register
             </Button>
+                    <button onClick={this.toLogin}>Login now</button>
                 </Form.Item>
             </Form>
         );

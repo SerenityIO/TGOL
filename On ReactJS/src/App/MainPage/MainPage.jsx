@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 
 class Main extends React.Component {
     constructor(props) {
@@ -142,13 +143,26 @@ class Main extends React.Component {
         for (let i = 0; i < temp.length; i++) {
             for (let j = 0; j < temp[i].length; j++) {
                 let stan = Math.round(Math.random());
-                if (stan == 1) temp[i][j].isActive = true;
-                if (stan == 0) temp[i][j].isActive = false;
+                if (stan === 1) temp[i][j].isActive = true;
+                if (stan === 0) temp[i][j].isActive = false;
             }
         }
         this.setState({
             grid: temp
         });
+    }
+
+
+
+    exit = () => {
+        let DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
+
+        DataBase.forEach(e => {
+            e.isOnline = false;
+        });
+
+        window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
+        this.props.history.push('/auth');
     }
 
     render() {
@@ -188,9 +202,12 @@ class Main extends React.Component {
                     </table>
                 </div>
                 <h2>Generations: {this.state.gen}</h2>
+                <div className="exitButton">
+                    <button onClick={this.exit}>Exit</button>
+                </div>
             </div>
         )
     }
 }
 
-export default Main;
+export default withRouter(Main);

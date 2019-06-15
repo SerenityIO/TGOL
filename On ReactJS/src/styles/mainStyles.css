@@ -15,8 +15,21 @@ body {
     justify-content: center
 }
 
-form{
-    background-color:#ffffff;
+.exitButton {
+    display: flex;
+    justify-content: center;
+}
+
+div>h1 {
+    color: #ffffff;
+}
+
+div>h2 {
+    color: #ffffff;
+}
+
+form {
+    background-color: #ffffff;
 }
 
 .login-form {
