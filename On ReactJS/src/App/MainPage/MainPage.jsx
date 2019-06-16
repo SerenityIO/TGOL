@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 
+
 class Main extends React.Component {
     constructor(props) {
         super(props);
@@ -21,6 +22,18 @@ class Main extends React.Component {
     componentWillMount() {
         this.createGrid(this.state.tableSize);
     };
+
+    componentDidMount() {
+        window.onload = () => {
+            let DataBase = JSON.parse(window.localStorage.getItem('DataBase'));
+            let user = DataBase.find(element => element.isonline);
+            if (user) {
+                //alert("Welcome back," + user.email);
+            } else {
+                this.props.history.push('/reg');
+            }
+        }
+    }
 
     stopGame = () => {
         if (this.playing) {
@@ -164,6 +177,8 @@ class Main extends React.Component {
         window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
         this.props.history.push('/auth');
     }
+
+
 
     render() {
         return (
