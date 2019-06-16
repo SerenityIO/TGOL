@@ -25,7 +25,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         window.onload = () => {
-            let DataBase = JSON.parse(window.localStorage.getItem('DataBase'));
+            let DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
             let user = DataBase.find(element => element.isonline);
             if (user) {
                 //alert("Welcome back," + user.email);
