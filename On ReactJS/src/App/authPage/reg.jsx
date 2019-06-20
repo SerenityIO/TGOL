@@ -4,22 +4,19 @@ import {
     Input,
     Tooltip,
     Icon,
-    Select,
     Button,
-    AutoComplete,
+    
 } from 'antd';
 import { withRouter } from "react-router-dom";
 
 let DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
 console.log('DataBase', DataBase);
 
-const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
 
 class RegistrationForm extends React.Component {
     state = {
         confirmDirty: false,
-        autoCompleteResult: [],
+        
     };
 
     handleSubmit = e => {
@@ -30,14 +27,14 @@ class RegistrationForm extends React.Component {
                 temp = 0;
                 if (DataBase.length !== 0) {
                     DataBase.forEach(comp => {
-                        debugger
+                        
                         if (comp.email === values.email || comp.nickname === values.nickname) {
-                            debugger
+                            
                             temp = 1;
                         }
 
                         else {
-                            debugger
+                            
                             DataBase.push(
                                 {
                                     nickname: values.nickname,
@@ -92,24 +89,12 @@ class RegistrationForm extends React.Component {
         callback();
     };
 
-    handleWebsiteChange = value => {
-        let autoCompleteResult;
-        if (!value) {
-            autoCompleteResult = [];
-        } else {
-            autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-        }
-        this.setState({ autoCompleteResult });
-    };
 
     toLogin = () => {
         this.props.history.push('/auth');
     }
-
     render() {
-        const { getFieldDecorator } = this.props.form;
-        const { autoCompleteResult } = this.state;
-
+        const { getFieldDecorator } = this.props.form;     
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -132,18 +117,6 @@ class RegistrationForm extends React.Component {
                 },
             },
         };
-        const prefixSelector = getFieldDecorator('prefix', {
-            initialValue: '86',
-        })(
-            <Select style={{ width: 70 }}>
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-            </Select>,
-        );
-
-        const websiteOptions = autoCompleteResult.map(website => (
-            <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
-        ));
 
         return (
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -205,7 +178,7 @@ class RegistrationForm extends React.Component {
                     <Button type="primary" htmlType="submit">
                         Register
             </Button>
-                    <button onClick={this.toLogin}>Login now</button>
+                    <Button className="ant-btn ant-btn-primary" onClick={this.toLogin}>Login now</Button>
                 </Form.Item>
             </Form>
         );

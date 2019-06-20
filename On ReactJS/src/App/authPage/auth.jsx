@@ -1,18 +1,15 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import { withRouter } from "react-router-dom";
 
 let DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
-console.log('Base', DataBase);
 
 class Auth extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-
       if (!err) {
         console.log('Received values of form: ', values);
-        debugger
         if (DataBase && DataBase.length) {
           let i = 0;
           DataBase.forEach(element => {
@@ -28,6 +25,10 @@ class Auth extends React.Component {
       }
     });
   };
+
+  toReg = () => {
+    this.props.history.push('/reg');
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -58,6 +59,9 @@ class Auth extends React.Component {
           <Button type="primary" htmlType="submit" className="login-form-button">
             Log in
           </Button>
+          <Button className="ant-btn ant-btn-primary" onClick={this.toReg}>
+            Register now
+            </Button>
         </Form.Item>
       </Form>
     );

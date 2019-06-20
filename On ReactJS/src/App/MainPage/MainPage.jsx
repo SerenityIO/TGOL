@@ -11,12 +11,6 @@ class Main extends React.Component {
             gen: 0,
             speed: 100,
         };
-        this.handleChangeSize = this.handleChangeSize.bind(this);
-        this.playGame = this.playGame.bind(this);
-        this.playGame1 = this.playGame1.bind(this);
-        this.clearField = this.clearField.bind(this);
-        this.randomGen = this.randomGen.bind(this);
-
     };
 
     componentWillMount() {
@@ -58,14 +52,14 @@ class Main extends React.Component {
         this.playing = setInterval(this.playGame1, this.state.speed);
     }
 
-    playGame() {
+    playGame = () => {
         if (this.playing) {
             clearInterval(this.playing);
         }
         this.playing = setInterval(this.playGame1, this.state.speed);
     }
 
-    playGame1() {
+    playGame1 = () => {
 
         let temp = this.state.grid;
         let nextGen = JSON.parse(JSON.stringify(this.state.grid));
@@ -100,7 +94,7 @@ class Main extends React.Component {
         })
     }
 
-    clearField() {
+    clearField = () => {
         let temp = this.state.grid;
         for (let i = 0; i < temp.length; i++) {
             for (let j = 0; j < temp[i].length; j++) {
@@ -136,14 +130,18 @@ class Main extends React.Component {
         })
     };
 
-    handleChangeSize(e) {
+    handleChangeSize = (e) => {
         this.setState({
             tableSize: e.target.value
         });
         this.createGrid(e.target.value);
+        this.stopGame();
+        this.setState({
+            gen: 0
+        });
     };
 
-    changeCell(a, b) {
+    changeCell = (a, b) => {
         let temp = this.state.grid;
         temp[a][b].isActive = !temp[a][b].isActive;
         this.setState({
@@ -151,7 +149,7 @@ class Main extends React.Component {
         });
     }
 
-    randomGen() {
+    randomGen = () => {
         let temp = this.state.grid;
         for (let i = 0; i < temp.length; i++) {
             for (let j = 0; j < temp[i].length; j++) {
@@ -192,7 +190,7 @@ class Main extends React.Component {
                         <button className="userInterface" onClick={this.slow}>Slow</button>
                         <button className="userInterface" onClick={this.fast}>Fast</button>
                         <button className="userInterface" onClick={this.randomGen}>Seed</button>
-                        <select onChange={this.handleChangeSize} id="size">
+                        <select onChange={this.handleChangeSize}  id="size">
                             <option value="10x20">10x20</option>
                             <option value="30x50">30x50</option>
                             <option value="50x70">50x70</option>
@@ -203,7 +201,8 @@ class Main extends React.Component {
                     <table className="field" cellSpacing='0'>
                         <tbody>
                             {this.state.grid.map((v1, i) => (
-                                <tr className='row'>
+                                <tr
+                                className='row'>
                                     {v1.map((v2, j) => (
                                         <td
                                             key={v2.id}
