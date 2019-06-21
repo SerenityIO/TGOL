@@ -32,16 +32,12 @@ form {
     background-color: #ffffff;
 }
 
-.login-form {
-    max-width: 300px;
+.ant-layout-form{
+    padding:10px;
 }
 
-.login-form-forgot {
-    float: right;
-}
-
-.login-form-button {
-    width: 100%;
+.registration-label {
+    color: #ffffff;
 }
 
 h1, h2 {

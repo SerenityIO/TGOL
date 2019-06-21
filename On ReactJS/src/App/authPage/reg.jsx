@@ -5,7 +5,7 @@ import {
     Tooltip,
     Icon,
     Button,
-    
+    message
 } from 'antd';
 import { withRouter } from "react-router-dom";
 
@@ -16,7 +16,7 @@ console.log('DataBase', DataBase);
 class RegistrationForm extends React.Component {
     state = {
         confirmDirty: false,
-        
+
     };
 
     handleSubmit = e => {
@@ -27,14 +27,14 @@ class RegistrationForm extends React.Component {
                 temp = 0;
                 if (DataBase.length !== 0) {
                     DataBase.forEach(comp => {
-                        
+
                         if (comp.email === values.email || comp.nickname === values.nickname) {
-                            
+
                             temp = 1;
                         }
 
                         else {
-                            
+
                             DataBase.push(
                                 {
                                     nickname: values.nickname,
@@ -48,7 +48,7 @@ class RegistrationForm extends React.Component {
                         }
                     });
                     if (temp === 1) {
-                        alert('this user already exists');
+                        message.error('This user already exist');
                     }
                 }
                 else {
@@ -94,7 +94,7 @@ class RegistrationForm extends React.Component {
         this.props.history.push('/auth');
     }
     render() {
-        const { getFieldDecorator } = this.props.form;     
+        const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -119,7 +119,7 @@ class RegistrationForm extends React.Component {
         };
 
         return (
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+            <Form className="regForm" {...formItemLayout} onSubmit={this.handleSubmit}>
                 <Form.Item label="E-mail">
                     {getFieldDecorator('email', {
                         rules: [
@@ -175,10 +175,10 @@ class RegistrationForm extends React.Component {
                     })(<Input />)}
                 </Form.Item>
                 <Form.Item {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" className="login-form-button" htmlType="submit">
                         Register
             </Button>
-                    <Button className="ant-btn ant-btn-primary" onClick={this.toLogin}>Login now</Button>
+                    <Button type="primary" className="login-form-button" onClick={this.toLogin}>Login now</Button>
                 </Form.Item>
             </Form>
         );

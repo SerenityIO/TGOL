@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import { withRouter } from "react-router-dom";
 
 let DataBase = (JSON.parse(window.localStorage.getItem('DataBase'))) ? JSON.parse(window.localStorage.getItem('DataBase')) : [];
@@ -15,11 +15,13 @@ class Auth extends React.Component {
           DataBase.forEach(element => {
             if (values.username === element.nickname && values.password === element.password) {
               element.isOnline = true;
-              element.userId = i;
               window.localStorage.setItem('DataBase', JSON.stringify(DataBase));
               this.props.history.push('/field');
+              i++;
             }
-            i++;
+            if (i === 0) {
+              message.error('Invalid user');
+            }
           });
         }
       }
@@ -59,7 +61,7 @@ class Auth extends React.Component {
           <Button type="primary" htmlType="submit" className="login-form-button">
             Log in
           </Button>
-          <Button className="ant-btn ant-btn-primary" onClick={this.toReg}>
+          <Button type="primary" className="login-form-button" onClick={this.toReg}>
             Register now
             </Button>
         </Form.Item>
