@@ -175,14 +175,16 @@ class RegistrationForm extends React.Component {
                             rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" className="login-form-button" htmlType="submit">
+                    <Form.Item  {...tailFormItemLayout}>
+
+                        <Button type="primary" className="reg-button" htmlType="submit">
                             Register
             </Button>
-                        <Button type="primary" className="login-form-button" onClick={this.toLogin}>Login now</Button>
+                        <Button type="primary" className="reg-button" onClick={this.toLogin}>Login now</Button>
+
                     </Form.Item>
                 </Form>
-            </div>
+            </div >
         );
     }
 }

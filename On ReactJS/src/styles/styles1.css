@@ -5,3 +5,13 @@
     border-radius: 15px;
     min-width: 400px;
 }
+
+.reg-button {
+    width: 100%;
+}
+
+.ant-col-sm-offset-8 {
+    margin-left: 0;
+    width:100%;
+}
+
