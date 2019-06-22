@@ -1,8 +1,7 @@
 .regForm {
     display: flex;
     flex-direction: column;
-    padding: 0 1% 0 1%;
+    padding: 1% 1% 0 1%;
     border-radius: 15px;
     min-width: 400px;
 }
-
