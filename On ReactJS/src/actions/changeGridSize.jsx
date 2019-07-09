@@ -9,4 +9,4 @@ export default connect(
             dispatch({ type: 'CHANGE_GRID_SIZE', payload: gridSize });
         }
     })
-)(Body);
+)(App);

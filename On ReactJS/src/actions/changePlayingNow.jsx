@@ -1,4 +1,4 @@
-import { connect } from 'tls';
+import { connect } from 'react-redux';
 
 export default connect(
     state => ({
@@ -9,4 +9,4 @@ export default connect(
             dispatch({ type: 'CHANGE_PLAYING_NOW', payload: isPlaying });
         }
     })
-)(Body);
+)(App);

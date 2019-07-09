@@ -9,4 +9,4 @@ export default connect(
             dispatch({ type: 'CHANGE_GENERATIONS_COUNT', payload: generations });
         }
     })
-)(Body);
+)(App);

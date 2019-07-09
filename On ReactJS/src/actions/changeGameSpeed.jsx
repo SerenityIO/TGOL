@@ -9,4 +9,4 @@ export default connect(
             dispatch({ type: 'CHANGE_GAME_SPEED', payload: gameSpeed });
         }
     })
-)(Body);
+)(App);

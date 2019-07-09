@@ -3,6 +3,7 @@ import Auth1 from '../App/authPage/auth.jsx';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import RegistrationForm1 from '../App/authPage/reg.jsx';
 import React from 'react';
+import "../styles/mainStyles.css";
 
 class App extends React.Component {
     render() {

@@ -1,20 +1,9 @@
 import React from 'react';
-import { withRouter } from "react-router-dom";
-
+import { connect } from 'react-redux';
 
 class Main extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tableSize: "10x20",
-            grid: [],
-            gen: 0,
-            speed: 100,
-        };
-    };
-
     componentWillMount() {
-        this.createGrid(this.state.tableSize);
+        this.createGrid(this.props.gridSize);
     };
 
     componentDidMount() {
@@ -36,36 +25,41 @@ class Main extends React.Component {
     }
 
     slow = () => {
-        this.state.speed += 100;
+        let spd = this.props.gameSpeed;
+        spd += 100;
+        this.props.onChangeGameSpeed(spd);
         if (this.playing) {
             clearInterval(this.playing);
         }
-        this.playing = setInterval(this.playGame1, this.state.speed);
+        this.playing = setInterval(this.playGame1, spd);
     }
 
     fast = () => {
-        if (this.state.speed > 200)
-            this.state.speed -= 100;
+        let spd = this.props.gameSpeed;
+        if (this.props.gameSpeed > 200) {
+            spd -= 100;
+            this.props.onChangeGameSpeed(spd);
+        }
         if (this.playing) {
             clearInterval(this.playing);
         }
-        this.playing = setInterval(this.playGame1, this.state.speed);
+        this.playing = setInterval(this.playGame1, spd);
     }
 
     playGame = () => {
+        let spd = this.props.gameSpeed;
         if (this.playing) {
             clearInterval(this.playing);
         }
-        this.playing = setInterval(this.playGame1, this.state.speed);
+        this.playing = setInterval(this.playGame1, spd);
     }
 
     playGame1 = () => {
+        let temp = this.props.gridArray;
+        let nextGen = JSON.parse(JSON.stringify(this.props.gridArray));
+        let tempGen = this.props.generations;
 
-        let temp = this.state.grid;
-        let nextGen = JSON.parse(JSON.stringify(this.state.grid));
-        let tempGen = this.state.gen;
-
-        let size = this.state.tableSize;
+        let size = this.props.gridSize;
         let size1 = size.split('x');
         let rows = size1[0];
         let cols = size1[1];
@@ -88,25 +82,22 @@ class Main extends React.Component {
             }
         }
         tempGen++;
-        this.setState({
-            grid: nextGen,
-            gen: tempGen,
-        })
+
+        this.props.onChangeGridArray(nextGen);
+        this.props.onChangeGenerationsCount(tempGen);
     }
 
     clearField = () => {
-        let temp = this.state.grid;
+        let temp = JSON.parse(JSON.stringify(this.props.gridArray));
         for (let i = 0; i < temp.length; i++) {
             for (let j = 0; j < temp[i].length; j++) {
                 temp[i][j].isActive = false;
             }
         }
-        this.setState({
-            grid: temp,
-            gen: 0
-        });
-        this.stopGame();
+        this.props.onChangeGridArray(temp);
+        this.props.onChangeGenerationsCount(0);
 
+        this.stopGame();
     }
 
     createGrid = (size) => {
@@ -125,32 +116,27 @@ class Main extends React.Component {
             }
             gridFull.push(gTr)
         }
-        this.setState({
-            grid: gridFull
-        })
+
+        this.props.onChangeGridArray(gridFull);
     };
 
     handleChangeSize = (e) => {
-        this.setState({
-            tableSize: e.target.value
-        });
+        this.props.onChangeGridSize(e.target.value);
         this.createGrid(e.target.value);
         this.stopGame();
-        this.setState({
-            gen: 0
-        });
+        this.props.onChangeGenerationsCount(0);
     };
 
+
+
     changeCell = (a, b) => {
-        let temp = this.state.grid;
+        let temp = JSON.parse(JSON.stringify(this.props.gridArray));
         temp[a][b].isActive = !temp[a][b].isActive;
-        this.setState({
-            grid: temp
-        });
+        this.props.onChangeGridArray(temp);
     }
 
     randomGen = () => {
-        let temp = this.state.grid;
+        let temp = JSON.parse(JSON.stringify(this.props.gridArray));
         for (let i = 0; i < temp.length; i++) {
             for (let j = 0; j < temp[i].length; j++) {
                 let stan = Math.round(Math.random());
@@ -158,9 +144,7 @@ class Main extends React.Component {
                 if (stan === 0) temp[i][j].isActive = false;
             }
         }
-        this.setState({
-            grid: temp
-        });
+        this.props.onChangeGridArray(temp);
     }
 
 
@@ -179,6 +163,7 @@ class Main extends React.Component {
 
 
     render() {
+        console.log("ONO", this.props);
         return (
             <div >
                 <h1>The Game of Life</h1>
@@ -190,7 +175,7 @@ class Main extends React.Component {
                         <button className="userInterface" onClick={this.slow}>Slow</button>
                         <button className="userInterface" onClick={this.fast}>Fast</button>
                         <button className="userInterface" onClick={this.randomGen}>Seed</button>
-                        <select onChange={this.handleChangeSize}  id="size">
+                        <select onChange={this.handleChangeSize} id="size">
                             <option value="10x20">10x20</option>
                             <option value="30x50">30x50</option>
                             <option value="50x70">50x70</option>
@@ -200,13 +185,13 @@ class Main extends React.Component {
                 <div className="gameField">
                     <table className="field" cellSpacing='0'>
                         <tbody>
-                            {this.state.grid.map((v1, i) => (
+                            {this.props.gridArray.map((v1, i) => (
                                 <tr
-                                className='row'>
+                                    className='row'>
                                     {v1.map((v2, j) => (
                                         <td
                                             key={v2.id}
-                                            className={this.state.grid[i][j].isActive ? 'alive' : 'cell'}
+                                            className={this.props.gridArray[i][j].isActive ? 'alive' : 'cell'}
                                             onClick={() => this.changeCell(i, j)}
                                         />
                                     ))}
@@ -215,7 +200,7 @@ class Main extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <h2>Generations: {this.state.gen}</h2>
+                <h2>Generations: {this.props.generations}</h2>
                 <div className="exitButton">
                     <button onClick={this.exit}>Exit</button>
                 </div>
@@ -224,4 +209,29 @@ class Main extends React.Component {
     }
 }
 
-export default withRouter(Main);
+export default connect(
+    state => ({
+        gridSize: state.gridSize,
+        gameSpeed: state.gameSpeed,
+        generations: state.genCount,
+        gridArray: state.gridArray,
+        isPlaying: state.isPlaying,
+    }),
+    dispatch => ({
+        onChangeGridSize: (gridSize) => {
+            dispatch({ type: 'CHANGE_GRID_SIZE', payload: gridSize });
+        },
+        onChangeGameSpeed: (gameSpeed) => {
+            dispatch({ type: 'CHANGE_GAME_SPEED', payload: gameSpeed });
+        },
+        onChangeGenerationsCount: (generations) => {
+            dispatch({ type: 'CHANGE_GENERATIONS_COUNT', payload: generations });
+        },
+        onChangeGridArray: (gridArray) => {
+            dispatch({ type: 'CHANGE_GRID_ARRAY', payload: gridArray });
+        },
+        onChangeIsPlaying: (isPlaying) => {
+            dispatch({ type: 'CHANGE_PLAYING_NOW', payload: isPlaying });
+        }
+    })
+)(Main);
